@@ -17,6 +17,7 @@ const Paste = () => {
     const pastes = useSelector((state: any) => state.paste.pastes as PasteItem[]);
     const [searchTerm, setSearchTerm] = useState("");
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const filteredData = pastes.filter((paste) =>
         paste.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -26,46 +27,55 @@ const Paste = () => {
         dispatch(removeFromPastes(pasteId));
     }
 
-    const navigate = useNavigate();
-
     function handleView(paste: PasteItem) {
         navigate(`/pastes/${paste._id}`);
     }
 
     return (
-        <div className="p-4">
+        <div className="p-2 md:p-4 max-w-full overflow-x-hidden">
             <input
-                className="p-2 pl-4 rounded-2xl min-w-[600px] mt-5"
+                className="p-2 pl-4 rounded-2xl w-full max-w-[300px] md:max-w-[600px] mt-2 md:mt-5"
                 type="search"
                 placeholder="Search Here"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
 
-            <div className="border p-6 mt-10 rounded-md">
-                <h2 className="text-xl font-semibold mb-4">All Pastes</h2>
+            <div className="border p-3 md:p-6 mt-8 md:mt-10 rounded-md w-full">
+                <h2 className="text-lg md:text-xl font-semibold mb-5">All Pastes</h2>
 
                 <div className="flex flex-col gap-5">
                     {filteredData.length > 0 &&
                         filteredData.map((paste) => (
-                            <div
-                                className="border p-4 rounded-md"
-                                key={paste?._id}
-                            >
-                                <div className="font-medium">{paste.title}</div>
+                            <div className="border p-3 md:p-4 rounded-md" key={paste._id}>
+                                <div className="font-medium text-base md:text-lg">{paste.title}</div>
 
-                                <div className="mt-2">{paste.value}</div>
+                                <div className="mt-2 text-sm md:text-base">{paste.value}</div>
 
-                                <div className="flex flex-row gap-4 justify-evenly mt-4">
-                                    <button onClick={() => navigate(`/?pasteId=${paste?._id}`)}>
+                                <div className="flex flex-row flex-wrap gap-2 md:gap-4 justify-evenly mt-4 text-sm md:text-base">
+                                    <button
+                                        className="px-2 py-1 md:px-3 md:py-1.5 rounded-md bg-gray-200"
+                                        onClick={() => navigate(`/?pasteId=${paste._id}`)}
+                                    >
                                         Edit
                                     </button>
 
-                                    <button onClick={() => handleView(paste)}>View</button>
-
-                                    <button onClick={() => handleDelete(paste)}>Delete</button>
+                                    <button
+                                        className="px-2 py-1 md:px-3 md:py-1.5 rounded-md bg-gray-200"
+                                        onClick={() => handleView(paste)}
+                                    >
+                                        View
+                                    </button>
 
                                     <button
+                                        className="px-2 py-1 md:px-3 md:py-1.5 rounded-md bg-gray-200"
+                                        onClick={() => handleDelete(paste)}
+                                    >
+                                        Delete
+                                    </button>
+
+                                    <button
+                                        className="px-2 py-1 md:px-3 md:py-1.5 rounded-md bg-gray-200"
                                         onClick={() => {
                                             navigator.clipboard.writeText(paste.value);
                                             toast.success("Copied to Clipboard");
@@ -74,17 +84,21 @@ const Paste = () => {
                                         Copy
                                     </button>
 
-                                    <button onClick={() => {
-                                        const shareUrl = `${window.location.origin}/pastes/${paste._id}`;
-                                        navigator.clipboard.writeText(shareUrl);
-                                        toast.success("Link copied to clipboard!");
-                                    }}>Share</button>
+                                    <button
+                                        className="px-2 py-1 md:px-3 md:py-1.5 rounded-md bg-gray-200"
+                                        onClick={() => {
+                                            const shareUrl = `${window.location.origin}/pastes/${paste._id}`;
+                                            navigator.clipboard.writeText(shareUrl);
+                                            toast.success("Link copied to clipboard!");
+                                        }}
+                                    >
+                                        Share
+                                    </button>
                                 </div>
 
-                                <div className="text-sm text-white-500 mt-2">
+                                <div className="text-xs md:text-sm text-gray-500 mt-2">
                                     {format(new Date(paste.createdAt), "dd MMM yyyy, hh:mm a")}
                                 </div>
-
                             </div>
                         ))}
                 </div>

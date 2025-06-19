@@ -57,26 +57,28 @@ const Home = () => {
 
     return (
         <div>
-            <div className="flex flex-row gap-7 place-content-between">
+            <div className="flex flex-row gap-4 md:gap-7 place-content-between">
 
-                <input className="p-2 rounded-2xl mt-2 w-[60%] pl-4"
+                <input className="p-2 rounded-2xl w-[50%] h-12 mt-2 md:w-[60%] pl-4"
                     type="text"
                     placeholder="Enter Your Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
 
-                <button onClick={createPaste} className="p-2 rounded-2xl mt-2">
-                    {
-                        pasteId ? "Update My Paste" : "Create My Paste"
-                    }
+                <button
+                    onClick={createPaste}
+                    className="md:p-2 h-12 rounded-2xl mt-2 px-4 md:px-6 whitespace-nowrap"
+                >
+                    {pasteId ? "Update My Paste" : "Create My Paste"}
                 </button>
+
 
             </div>
 
             <div className="mt-8">
                 <textarea
-                    className="rounded-2xl mt-4, min-w-[500px] p-4"
+                    className="rounded-2xl mt-4 h-110 w-[310px] md:w-[500px] p-4"
                     placeholder="Enter Content"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
